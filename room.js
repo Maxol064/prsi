@@ -26,7 +26,7 @@ class Room {
     }
 
     start() {
-        console.log(`${this.admin.name} started game ${this.name}!`);
+        console.log(`${this.admin.name} started a game in ${this.name}! (ID: ${this.id})`);
         this.playing = true;
     }
 }

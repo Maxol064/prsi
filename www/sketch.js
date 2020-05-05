@@ -58,6 +58,11 @@ function setup() {
         });
     });
 
+    socket.on('udumblol', reason => {
+        console.log(reason + 'lmao');
+        alert('Oh no! ' + reason);
+    })
+
     noCanvas();
 
     // createCanvas(windowWidth, windowHeight);

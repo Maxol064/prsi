@@ -18,7 +18,7 @@ let rooms = [
 
 const io = socketIO(server);
 
-setInterval(() => console.log(rooms), 1000);
+// setInterval(() => console.log(rooms), 1000);
 
 io.on('connection', (socket) => {
     console.log('We got a new boi');
@@ -30,8 +30,16 @@ io.on('connection', (socket) => {
     socket.on('joinreq', req => {  // req = { roomid: 'foo', name: 'users name' }
         console.log('joinreq', req);
         socket.join(req.roomid, () => {
+
             room = rooms[req.roomid];
-            player = new Player(socket.id, req.name.substring(0, 16));
+            var reqname = req.name.substring(0, 16);
+
+            if (isInPlayers(room.players, reqname)) {
+                socket.emit('udumblol', 'Someone already has that name :(');
+                return;
+            }
+
+            player = new Player(socket.id, reqname);
             room.newBoi(player);
 
             io.emit('roomlist', rooms.filter(i => !i.playing));  // TODO: send only to lobby
@@ -39,11 +47,11 @@ io.on('connection', (socket) => {
             io.to(req.roomid).emit('room-status', room.players);
 
             if (player.admin)
-                socket.on('start-game', nothing => {
+                socket.on('start-game', _ => {
                     room.start();
                     io.emit('roomlist', rooms.filter(i => !i.playing));
                     io.to(req.roomid).emit('game-started', 'xd');
-                });
+            });
         });
     });
 
@@ -60,3 +68,8 @@ io.on('connection', (socket) => {
     
 });
 
+function isInPlayers(playerArray, checkName) {
+    for (let curPlayer in playerArray) 
+        if (playerArray[curPlayer].name == checkName) return true;
+    return false;
+}
