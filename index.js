@@ -38,6 +38,10 @@ io.on('connection', (socket) => {
                 socket.emit('udumblol', 'Someone already has that name :(');
                 return;
             }
+            else if (reqname == '') {
+                socket.emit('udumblol', 'You must have some name!');
+                return;
+            }
 
             player = new Player(socket.id, reqname);
             room.newBoi(player);
