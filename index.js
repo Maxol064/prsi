@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
             io.to(req.roomid).emit('room-status', room.players);
 
             if (player.admin)
-                socket.on('start-game', _ => {
+                socket.on('start-game', () => {
                     room.start();
                     io.emit('roomlist', rooms.filter(i => !i.playing));
                     io.to(req.roomid).emit('game-started', 'xd');

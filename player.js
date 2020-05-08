@@ -3,6 +3,7 @@ class Player {
         this.id = id;
         this.name = name;
         this.admin = false;
+        this.cards = [];
     }
 
     makeAdmin() {

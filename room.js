@@ -28,7 +28,31 @@ class Room {
     start() {
         console.log(`${this.admin.name} started a game in ${this.name}! (ID: ${this.id})`);
         this.playing = true;
+
+        this.stack = [ ...require('./card-list')];  // stack = to, odkud se karty lížou
+                                                    // [ ...x ] duplicates the array, otherwise push() and pop()
+                                                    // will also modify the array in ./card-list.js
+        shuffle(this.stack);
+
+        for (let i = 0; i < 4; i++)
+            for (let p in this.players)
+                this.players[p].cards.push(this.stack.pop());
+        
+        this.swapPackage = [];  // swapPackage = to, kam se karty hází;  neumím pojmenovávat proměnný
+        this.swapPackage.push(this.stack.pop());
+
+        console.log(this.players);
+        console.log(this.stack);
+        console.log(this.swapPackage);
     }
 }
 
 module.exports = Room;
+
+function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}

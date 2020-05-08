@@ -58,7 +58,7 @@ function setup() {
         });
     });
 
-    socket.on('udumblol', reason => {
+    socket.on('udumblol', reason => {  // reason = string
         console.log(reason + 'lmao');
         alert('Oh no! ' + reason);
     })
