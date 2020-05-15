@@ -5,6 +5,7 @@ class Room {
         this.name = name;
         this.players = {};
         this.playing = false;
+        this.order = [];
     }
 
     newBoi(player) {
@@ -15,12 +16,14 @@ class Room {
 
         this.numberOfBois++;
         this.players[player.id] = player;
+        this.order.push(player.id);
     }
 
     boiLeft(player) {
         this.numberOfBois--;
 
         delete this.players[player.id];
+        this.order.splice(this.order.indexOf(player.id), 1);
 
         // this.players.splice(this.players.indexOf(player), 1);  // TODO: create Array.prototype.remove
     }
@@ -41,9 +44,16 @@ class Room {
         this.discardPile = [];  // discardPile = to, kam se karty hází;  neumím pojmenovávat proměnný
         this.discardPile.push(this.stock.pop());
 
+        this.forehand = 0;  // forehand = index of the player first playing this game
+        this.activePlayer = this.forehand;  // activePlayer = index of the currently playing player:Do
+
         console.log(this.players);
         console.log(this.stock);
         console.log(this.discardPile);
+    }
+
+    getPlayerByIndex(index) {
+        return this.players[this.order[index]];
     }
 }
 

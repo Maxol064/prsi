@@ -18,7 +18,7 @@ let rooms = [
 
 const io = socketIO(server);
 
-// setInterval(() => console.log(rooms), 1000);
+setInterval(() => console.log(rooms), 1000);
 
 io.on('connection', (socket) => {
     console.log('We got a new boi');
@@ -54,7 +54,9 @@ io.on('connection', (socket) => {
                 socket.on('start-game', () => {
                     room.start();
                     io.emit('roomlist', rooms.filter(i => !i.playing));
-                    io.to(req.roomid).emit('game-started', 'xd');
+                    io.to(req.roomid).emit('game-status', {
+                        activePlayer: room.getPlayerByIndex(room.activePlayer).name
+                    });
             });
         });
     });

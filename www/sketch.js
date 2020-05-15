@@ -1,5 +1,7 @@
 let socket;
 let playing = false;
+let playerPs = [];
+let activePlayerP;
 
 function preload() {
     // font = loadFont('OpenSans-Light.ttf');
@@ -9,6 +11,8 @@ function setup() {
     socket = io();  // io.connect(window.location.origin);
 
     let namebox = createInput();
+
+    activePlayerP = createP('');
 
     let roomButts = [];
 
@@ -41,7 +45,6 @@ function setup() {
         if (admin)
             createButton('Start Game!').mouseClicked(() => socket.emit('start-game', 'lol'));
         
-        let playerPs = [];
 
         socket.on('room-status', status => {  // status = Room.players { id: Player { id, name }, ... }
             console.log('room-status', status);
@@ -53,8 +56,14 @@ function setup() {
                 playerPs.push(createP(`${status[p].name} (${status[p].id}) ${status[p].admin}`));
         });
 
-        socket.on('game-started', () => {
-            console.log('game started!');
+        socket.on('game-status', status => {  // status = object
+            console.log(status);
+            debugger;
+            
+            for (let p of playerPs)
+                p.remove();
+            
+            activePlayerP.value(`Nyní hraje: ${status.activePlayer}`);
         });
     });
 
