@@ -29,21 +29,21 @@ class Room {
         console.log(`${this.admin.name} started a game in ${this.name}! (ID: ${this.id})`);
         this.playing = true;
 
-        this.stack = [ ...require('./card-list')];  // stack = to, odkud se karty lížou
+        this.stock = [ ...require('./card-list')];  // stock = to, odkud se karty lížou
                                                     // [ ...x ] duplicates the array, otherwise push() and pop()
-                                                    // will also modify the array in ./card-list.js
-        shuffle(this.stack);
+                                                    // will also modify the array in ./card-list.js lol
+        shuffle(this.stock);
 
         for (let i = 0; i < 4; i++)
             for (let p in this.players)
-                this.players[p].cards.push(this.stack.pop());
+                this.players[p].cards.push(this.stock.pop());
         
-        this.swapPackage = [];  // swapPackage = to, kam se karty hází;  neumím pojmenovávat proměnný
-        this.swapPackage.push(this.stack.pop());
+        this.discardPile = [];  // discardPile = to, kam se karty hází;  neumím pojmenovávat proměnný
+        this.discardPile.push(this.stock.pop());
 
         console.log(this.players);
-        console.log(this.stack);
-        console.log(this.swapPackage);
+        console.log(this.stock);
+        console.log(this.discardPile);
     }
 }
 
